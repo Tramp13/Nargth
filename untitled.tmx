@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="cavesofgallet_tiles_scaled" tilewidth="32" tileheight="32" tilecount="192">
+  <image source="cavesofgallet_tiles_scaled.png" width="512" height="384"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="15" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzTZ2BgMCIDKwGxARAzkoEV8ehNxKMvnIBeKSCWAGJBIBZCw+kE9MKwIRa/ZmHRC7JDgQi/YtMLssOBTL3EYJj/ydEL8z+x8WtMYvwiuw9b+MH0SgKxOA732eMIP3L8i02vJxl65YBYngwsDMQAVmUP6w==
+  </data>
+ </layer>
+</map>
