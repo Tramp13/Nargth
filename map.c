@@ -26,7 +26,7 @@ void Map_free(Map *map) {
     free(map->tiles);
 }
 
-void Map_setTile(Map *map, int x, int y, int type) {
+void Map_setTile(Map *map, int x, int y, int type, GameS Game) {
     Entity tile;
     tile.x = x * Game.tile_size;
     tile.y = y * Game.tile_size;

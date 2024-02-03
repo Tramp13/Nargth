@@ -33,8 +33,15 @@
 #define MOVE 3
 #define ATTACK 4
 
-SDL_Rect sprites[16 * 12];
-void init_sprites();
+typedef struct GameStruct GameS;
+struct GameStruct {
+    bool up, down, left, right, attack;
+    int window_width;
+    int window_height;
+    int tile_size;
+};
+
+void init_sprites(SDL_Rect *sprites, GameS Game);
 
 typedef struct TimerStruct Timer;
 struct TimerStruct {
@@ -99,9 +106,8 @@ int right(Entity *entity);
 bool collides(Entity *a, Entity *b);
 Point direction_delta(int direction);
 
-void Entity_dst(SDL_Rect *dst, Entity *entity);
-
-struct Camera {
+typedef struct CameraStruct Camera;
+struct CameraStruct {
   int x, y;
   bool bounded;
   int x_speed;
@@ -109,10 +115,11 @@ struct Camera {
   int transitioning;
   Entity *room;
   Entity *old_room;
-} camera;
+};
 
-void init_camera();
-void center_camera(Entity *entity);
+void init_camera(Camera *camera);
+void center_camera(Camera *camera, Entity *entity, GameS *Game);
+void Entity_dst(SDL_Rect *dst, Entity *entity, Camera *camera, SDL_Rect *sprites);
 
 typedef struct MapStruct Map;
 
@@ -127,14 +134,7 @@ struct MapStruct {
 
 Map Map_create(int w, int h);
 void Map_free();
-void Map_setTile(Map *map, int x, int y, int type);
+void Map_setTile(Map *map, int x, int y, int type, GameS Game);
 Entity *Map_addBeing(Map *map);
-
-struct GameStruct {
-    bool up, down, left, right, attack;
-    int window_width;
-    int window_height;
-    int tile_size;
-} Game;
 
 #endif

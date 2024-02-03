@@ -15,8 +15,8 @@ struct CollisionList {
 } collision_list;
 
 void draw_entity(Entity *entity, SDL_Renderer *renderer, SDL_Texture *texture,
-                 SDL_Rect *dst) {
-    Entity_dst(dst, entity);
+                 SDL_Rect *dst, Camera *camera, SDL_Rect *sprites) {
+    Entity_dst(dst, entity, camera, sprites);
     SDL_RenderCopy(renderer, texture, &sprites[entity->spr], dst);
 }
 
@@ -32,6 +32,7 @@ int main(int argc, char ** argv)
 {
   srand(time(0));
   int start_ticks;
+  struct GameStruct Game;
   Game.up = Game.down = Game.left = Game.right = Game.attack = false;
   Game.tile_size = 32;
   int frame = 0;
@@ -41,8 +42,10 @@ int main(int argc, char ** argv)
   Game.window_width = 15 * Game.tile_size;
   printf("\n%d\n", Game.tile_size);
   Game.window_height = 15 * Game.tile_size;
-  init_sprites();
-  init_camera();
+  SDL_Rect sprites[16 * 12];
+  init_sprites(sprites, Game);
+  Camera camera;
+  init_camera(&camera);
   SDL_Event event;
 
   SDL_Init(SDL_INIT_VIDEO);
@@ -89,7 +92,7 @@ int main(int argc, char ** argv)
     }
     for (int y = 0; y < 15; y++) {
         for (int x = 0; x < 15; x++) {
-            Map_setTile(&map, x, y, map_array[(y * 15) + x]);
+            Map_setTile(&map, x, y, map_array[(y * 15) + x], Game);
         }
     }
   
@@ -269,10 +272,10 @@ int main(int argc, char ** argv)
     
     SDL_RenderClear(renderer);
     for (int i = 0; i < (map.w * map.h); i++) {
-        draw_entity(&map.tiles[i], renderer, texture, &dst);
+        draw_entity(&map.tiles[i], renderer, texture, &dst, &camera, sprites);
     }
     for (int i = 0; i < map.being_count; i++) {
-        draw_entity(&map.beings[i], renderer, texture, &dst);
+        draw_entity(&map.beings[i], renderer, texture, &dst, &camera, sprites);
     }
     SDL_RenderPresent(renderer);
     if ((cap == true) && (Timer_get_ticks(&fps) < 1000 / FRAME_RATE)) {
